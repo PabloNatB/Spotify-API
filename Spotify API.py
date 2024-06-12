@@ -6,7 +6,7 @@ Created on Mon Jun 10 18:22:45 2024
 """
 
 
-from API_functions import search,get_token
+from API_functions import spotify_top_ten_songs
 
 
 
@@ -17,9 +17,11 @@ file.close()
 client_ID=lines[0][:-1]
 client_secret=lines[1]
 
-token = get_token(client_ID,client_secret)
+top_ten = spotify_top_ten_songs(client_ID, client_secret)
        
 
 names=["Thom Yorke" , "Radiohead" , "Interpol" , "Arctic Monkeys" , "Muse" , "Deftones"]
 for name in names:
-    search(token,name)
+    top_ten.artist_name = name
+    top_ten.search()
+    top_ten.to_database()
