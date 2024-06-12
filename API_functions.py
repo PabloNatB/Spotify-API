@@ -133,28 +133,30 @@ class spotify_top_ten_songs:
     def to_database(self):
         
         database_name= self.__artist_name.replace(" ","_") + ".db"
-        print(database_name)
+        #print(database_name)
         conn = sqlite3.connect(database_name)
         cursor = conn.cursor()
         
         #preparing statement
-        sql1 = f"DROP TABLE IF EXISTS {database_name}" 
-        sql2 = f'''CREATE TABLE {database_name} (
+        sql1 = "DROP TABLE IF EXISTS data" 
+        sql2 = '''CREATE TABLE data (
         
         Place INT NOT NULL,
-        Song name CHAR(100) NOT NULL,
-        Album CHAR(100),
+        Song name CHAR,
+        Album CHAR,
         Duration FLOAT,
-        Image_URL CHAR(255)
+        Image_URL CHAR
         
         )'''
         cursor.execute(sql1)
         cursor.execute(sql2)
         
-        sql3 = "INSERT INTO " + database_name + " VALUES (?,?,?,?,?)"
+        sql3 = "INSERT INTO data VALUES (?,?,?,?,?)"
         data = self.df_to_tuple(self.__df)
         for _ in range( len( self.__df ) ):
             cursor.execute(sql3,next(data))
+            
+        conn.commit()
         conn.close()
     
         
